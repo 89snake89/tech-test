@@ -1,1 +1,6 @@
 .idea
+/.settings/*
+/.project
+/.buildpath
+/Vagrantfile
+/composer.lock
