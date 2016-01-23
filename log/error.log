@@ -1,0 +1,1 @@
+[Sat Jan 23 18:50:10.718612 2016] [:error] [pid 7602] [client 127.0.0.1:53210] PHP Notice:  Undefined index: APPLICATION_ENV in /var/www/tech-test/public/index.php on line 6
