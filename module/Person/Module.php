@@ -38,10 +38,10 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 							return $table;
 						},
 						'PersonTableGateway' => function ($sm) {
-							$dbAdapter = $sm->get ( 'Zend\Db\Adapter\Adapter' );
+							$csv_file_path = $this->getConfig()['csv_configuration']['path_file'];
 							$resultSetPrototype = new ResultSet();
 							$resultSetPrototype->setArrayObjectPrototype (new Person());
-							return new CsvGateway ( 'person', $dbAdapter, null, $resultSetPrototype );
+							return new CsvGateway ( $csv_file_path, null, $resultSetPrototype );
 						} 
 				) 
 		);

@@ -98,7 +98,7 @@ abstract class AbstractCsvGateway implements TableGatewayInterface
 	public function select($where = null){
 		//TODO Leggere file CSV e ritornare dati
 		$dataArray = array();
-		if (($handle = fopen("/var/www/tech-test/module/Person/src/Person/Model/person.csv", "r")) !== FALSE) {
+		if (($handle = fopen($this->file_path, "r")) !== FALSE) {
 			while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
 				$person = new Person();
 				$person->name = $data[0];
@@ -120,7 +120,7 @@ abstract class AbstractCsvGateway implements TableGatewayInterface
 	 */
 	public function insert($set){
 		//TODO Write code to append in text file;
-		$handle = fopen("/var/www/tech-test/module/Person/src/Person/Model/person.csv","a");
+		$handle = fopen($this->file_path,"a");
 		fputcsv($handle, $set);
 		fclose($handle);
 	}
@@ -137,7 +137,7 @@ abstract class AbstractCsvGateway implements TableGatewayInterface
 		$dataArray[$where - 1]->name = $set['name'];
 		$dataArray[$where - 1]->surname = $set['surname'];
 		
-		$handle = fopen("/var/www/tech-test/module/Person/src/Person/Model/person.csv","w");
+		$handle = fopen($this->file_path,"w");
 		
 		for ($i = 0; $i < count($dataArray); $i++){
 			$set = array($dataArray[$i]->name, $dataArray[$i]->surname);

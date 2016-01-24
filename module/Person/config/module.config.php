@@ -29,4 +29,7 @@ return array(
 						'person' => __DIR__ . '/../view',
 				),
 		),
+		'csv_configuration' => array(
+				'path_file' => '/home/fabio/person.csv'
+		)
 );
