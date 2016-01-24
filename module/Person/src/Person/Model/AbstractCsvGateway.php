@@ -138,19 +138,6 @@ abstract class AbstractCsvGateway implements TableGatewayInterface
 		}
 		
 		return $dataArray;
-// 		if (!$this->isInitialized) {
-// 			$this->initialize();
-// 		}
-	
-// 		$select = $this->sql->select();
-	
-// 		if ($where instanceof \Closure) {
-// 			$where($select);
-// 		} elseif ($where !== null) {
-// 			$select->where($where);
-// 		}
-	
-// 		return $this->selectWith($select);
 	}
 	
 	/**
@@ -161,6 +148,10 @@ abstract class AbstractCsvGateway implements TableGatewayInterface
 	 */
 	public function insert($set){
 		//TODO Write code to append in text file;
+		$handle = fopen("/var/www/tech-test/module/Person/src/Person/Model/person.csv","a");
+		$line = implode(",", $set);
+		fputcsv($handle, $line);
+		fclose($file);
 	}
 	
 	/**
