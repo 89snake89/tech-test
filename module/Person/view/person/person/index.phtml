@@ -13,16 +13,18 @@
      <th>Surname</th>
      <th>&nbsp;</th>
  </tr>
+ <?php $row = 1; ?>
  <?php foreach ($persons as $person){?>
  <tr>
      <td><?php echo $this->escapeHtml($person->name);?></td>
      <td><?php echo $this->escapeHtml($person->surname);?></td>
      <td>
          <a href="<?php echo $this->url('person',
-             array('action'=>'edit', 'id' => $person->id));?>">Edit</a>
+             array('action'=>'edit', 'id' => $row));?>">Edit</a>
          <a href="<?php echo $this->url('person',
-             array('action'=>'delete', 'id' => $person->id));?>">Delete</a>
+             array('action'=>'delete', 'id' => $row));?>">Delete</a>
      </td>
  </tr>
+ <?php $row++; ?>
  <?php } ?>
  </table>

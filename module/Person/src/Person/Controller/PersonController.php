@@ -38,7 +38,44 @@ class PersonController extends AbstractActionController{
 	}
 	
 	public function editAction(){
+		$id = (int) $this->params()->fromRoute('id', 0);
+		if (!$id) {
+			return $this->redirect()->toRoute('person', array(
+					'action' => 'add'
+			));
+		}
 		
+		//TODO Modify and check on file
+		try {
+			$person = $this->getPersonTable()->getPerson($id);
+		}
+		catch (\Exception $ex) {
+			return $this->redirect()->toRoute('person', array(
+					'action' => 'index'
+			));
+		}
+		
+		$form  = new PersonForm();
+		$form->bind($person);
+		$form->get('submit')->setAttribute('value', 'Edit');
+		
+		$request = $this->getRequest();
+		if ($request->isPost()) {
+			$form->setInputFilter($person->getInputFilter());
+			$form->setData($request->getPost());
+		
+			if ($form->isValid()) {
+				$this->getPersonTable()->savePerson($person);
+		
+				// Redirect to list of persons
+				return $this->redirect()->toRoute('person');
+			}
+		}
+		
+		return array(
+				'id' => $id,
+				'form' => $form,
+		);
 	}
 	
 	public function deleteAction(){

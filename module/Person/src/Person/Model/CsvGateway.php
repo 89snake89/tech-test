@@ -23,6 +23,10 @@ class CsvGateway extends AbstractCsvGateway
 	 *
 	 * @throws Exception\InvalidArgumentException
 	 */
+	
+	public function __construct($file_path){
+		
+	}
 	public function __construct($table, AdapterInterface $adapter, $features = null, ResultSetInterface $resultSetPrototype = null, Sql $sql = null)
 	{
 		// table

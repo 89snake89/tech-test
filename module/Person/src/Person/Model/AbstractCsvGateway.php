@@ -30,9 +30,9 @@ abstract class AbstractCsvGateway implements TableGatewayInterface
 	protected $adapter = null;
 	
 	/**
-	 * @var string|array|TableIdentifier
+	 * @var string|array|CSV file path
 	 */
-	protected $table = null;
+	protected $file_path = null;
 	
 	/**
 	 * @var array
@@ -77,32 +77,6 @@ abstract class AbstractCsvGateway implements TableGatewayInterface
 		if ($this->isInitialized) {
 			return;
 		}
-	
-// 		if (!$this->featureSet instanceof Feature\FeatureSet) {
-// 			$this->featureSet = new Feature\FeatureSet;
-// 		}
-	
-// 		$this->featureSet->setTableGateway($this);
-// 		$this->featureSet->apply(EventFeature::EVENT_PRE_INITIALIZE, array());
-	
-// 		if (!$this->adapter instanceof AdapterInterface) {
-// 			throw new Exception\RuntimeException('This table does not have an Adapter setup');
-// 		}
-	
-// 		if (!is_string($this->table) && !$this->table instanceof TableIdentifier && !is_array($this->table)) {
-// 			throw new Exception\RuntimeException('This table object does not have a valid table set.');
-// 		}
-	
-// 		if (!$this->resultSetPrototype instanceof ResultSetInterface) {
-// 			$this->resultSetPrototype = new ResultSet;
-// 		}
-	
-// 		if (!$this->sql instanceof Sql) {
-// 			$this->sql = new Sql($this->adapter, $this->table);
-// 		}
-	
-// 		$this->featureSet->apply(EventFeature::EVENT_POST_INITIALIZE, array());
-	
 		$this->isInitialized = true;
 	}
 	
@@ -123,14 +97,12 @@ abstract class AbstractCsvGateway implements TableGatewayInterface
 	 */
 	public function select($where = null){
 		//TODO Leggere file CSV e ritornare dati
-		$row = 1;
 		$dataArray = array();
 		if (($handle = fopen("/var/www/tech-test/module/Person/src/Person/Model/person.csv", "r")) !== FALSE) {
 			while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
 				$person = new Person();
-				$person->id = $data[0];
-				$person->name = $data[1];
-				$person->surname = $data[2];
+				$person->name = $data[0];
+				$person->surname = $data[1];
 				
 				$dataArray[] = $person;
 			}
@@ -149,20 +121,29 @@ abstract class AbstractCsvGateway implements TableGatewayInterface
 	public function insert($set){
 		//TODO Write code to append in text file;
 		$handle = fopen("/var/www/tech-test/module/Person/src/Person/Model/person.csv","a");
-		$line = implode(",", $set);
-		fputcsv($handle, $line);
-		fclose($file);
+		fputcsv($handle, $set);
+		fclose($handle);
 	}
 	
 	/**
 	 * Update
 	 *
 	 * @param  array $set
-	 * @param  string|array|\Closure $where
+	 * @param  id to update
 	 * @return int
 	 */
 	public function update($set, $where = null){
+		$dataArray = $this->select();
+		$dataArray[$where - 1]->name = $set['name'];
+		$dataArray[$where - 1]->surname = $set['surname'];
 		
+		$handle = fopen("/var/www/tech-test/module/Person/src/Person/Model/person.csv","w");
+		
+		for ($i = 0; $i < count($dataArray); $i++){
+			$set = array($dataArray[$i]->name, $dataArray[$i]->surname);
+			fputcsv($handle, $set);
+		}
+		fclose($handle);
 	}
 	
 	/**

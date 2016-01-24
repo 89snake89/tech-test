@@ -16,11 +16,12 @@ class PersonTable
 
 	public function getPerson($id){
 		$id  = (int) $id;
-		$rowset = $this->tableGateway->select(array('id' => $id));
-		$row = $rowset->current();
+		$rowset = $this->tableGateway->select();
+		$row = $rowset[$id - 1];
 		if (!$row) {
 			throw new \Exception("Could not find row $id");
 		}
+		$row->id = $id;
 		return $row;
 	}
 
@@ -32,10 +33,11 @@ class PersonTable
 
 		$id = (int) $person->id;
 		if ($id == 0) {
-			$this->tableGateway->insert($data);
+			$set = array($data['name'], $data['surname']);
+			$this->tableGateway->insert($set);
 		} else {
 			if ($this->getPerson($id)) {
-				$this->tableGateway->update($data, array('id' => $id));
+				$this->tableGateway->update($data, $id);
 			} else {
 				throw new \Exception('Person id does not exist');
 			}

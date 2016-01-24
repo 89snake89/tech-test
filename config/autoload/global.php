@@ -25,4 +25,7 @@ return array(
                      => 'Zend\Db\Adapter\AdapterServiceFactory',
          ),
      ),
+	 'csv_configuration' => array(
+	 		'path_file' => '/home/fabio/person.csv'
+	 )
  );

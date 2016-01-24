@@ -1,11 +1,14 @@
 <?php
 namespace Person\Model;
 
+use Zend\InputFilter\InputFilter;
 class Person{
 	
 	public $id;
 	public $name;
 	public $surname;
+	
+	protected $inputFilter;
 	
 	public function exchangeArray($data){
 		$this->id     = (!empty($data['id'])) ? $data['id'] : null;
@@ -13,14 +16,16 @@ class Person{
 		$this->surname  = (!empty($data['surname'])) ? $data['surname'] : null;
 	}
 	
+	public function getArrayCopy(){
+		return get_object_vars($this);
+	}
+	
 	//Imput filter to validate form
-	public function setInputFilter(InputFilterInterface $inputFilter)
-	{
+	public function setInputFilter(InputFilterInterface $inputFilter){
 		throw new \Exception("Not used");
 	}
 	
-	public function getInputFilter()
-	{
+	public function getInputFilter(){
 		if (!$this->inputFilter) {
 			$inputFilter = new InputFilter();
 	
