@@ -30,6 +30,7 @@ return array(
 				),
 		),
 		'csv_configuration' => array(
+				//Modify CSV file path.
 				'path_file' => '/home/fabio/person.csv'
 		)
 );
